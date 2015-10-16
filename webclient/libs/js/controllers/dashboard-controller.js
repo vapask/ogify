@@ -26,21 +26,12 @@ ogifyApp.controller('DashboardController', function ($rootScope, $scope, $filter
         control: {}
     };
     
-    var getMaxOrdersInPage = function() {
-        return 5;
-    }
-    
     var getMaxDescription = function() {
         return 50;
     }
     
-    var getMaxPagesInBar = function() {
-        return 9;
-    }
     
     $scope.pageParameters = {
-        pageSize: getMaxOrdersInPage(),
-        pagesInBar: getMaxPagesInBar(),
         descriptionLength: getMaxDescription()
     }
 
@@ -58,11 +49,6 @@ ogifyApp.controller('DashboardController', function ($rootScope, $scope, $filter
             UserProfile.getExecutingOrders(user).$promise.then(function(data){
                 $scope.executingOrders = data;
                 $scope.showingOrders = data;
-                $scope.totalPages = window.Math.ceil(data.length / $scope.pageParameters.pageSize);
-                $scope.currentPage = {
-                    page: 0,
-                    pages: _.range(window.Math.min($scope.totalPages, $scope.pageParameters.pagesInBar))
-                }
             });
         });
     };
@@ -71,11 +57,6 @@ ogifyApp.controller('DashboardController', function ($rootScope, $scope, $filter
         Order.getNearMe($scope.map.center).$promise.then(function(data){
             $scope.showingOrders = data;
             $scope.getOrdersLinks();
-            $scope.totalPages = window.Math.ceil(data.length / $scope.pageParameters.pageSize);
-            $scope.currentPage = {
-                page: 0,
-                pages: _.range(window.Math.min($scope.totalPages, $scope.pageParameters.pagesInBar))
-            }
         });
     };
 
@@ -89,32 +70,6 @@ ogifyApp.controller('DashboardController', function ($rootScope, $scope, $filter
         ClickedOrder.set(order);
     };
 
-    $scope.previousPage = function(currentPage){
-        if (currentPage.page > 0) {
-            currentPage.page -= 1;
-            if (currentPage.page + 1 == currentPage.pages[0]) {
-                Math = window.Math;
-                currentPage.pages = _.range(Math.floor(currentPage.page / $scope.pageParameters.pagesInBar), 
-                                       Math.min(Math.floor(currentPage.page / $scope.pageParameters.pagesInBar)
-                                                           +$scope.pageParameters.pagesInBar,
-                                                $scope.totalPages));
-            }
-        }
-    };
-
-    $scope.nextPage = function(currentPage){
-        if (currentPage.page < $scope.totalPages - 1) {
-            currentPage.page += 1;
-            if (currentPage.page - 1 == currentPage.pages[currentPage.pages.length-1]) {
-                currentPage.pages = _.range(currentPage.page,
-                                       window.Math.min(currentPage.page + $scope.pageParameters.pagesInBar, $scope.totalPages));
-            }
-        };
-    };
-
-    $scope.setPage = function(currentPage, i){
-        currentPage.page = i;
-    };
 
     uiGmapGoogleMapApi.then(function(maps) {
         $scope.maps = maps;

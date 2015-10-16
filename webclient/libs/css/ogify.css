@@ -29,9 +29,16 @@
 }
 
 .current-orders-height {
-    height: calc(95vh - 120px);
-    height: -webkit-calc(95vh - 120px);
-    height: -moz-calc(95vh - 120px);
+    overflow: auto;
+    height: calc(94vh - 120px);
+    height: -webkit-calc(94vh - 120px);
+    height: -moz-calc(94vh - 120px);
+}
+
+.current-orders-header-height {
+    height: calc(6vh);
+    height: -webkit-calc(6vh);
+    height: -moz-calc(6vh);
 }
 
 .new-order-fileds { 

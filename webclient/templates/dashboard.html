@@ -18,45 +18,24 @@
         </div>
     </div>
 </div>
-<div class="col-sm-8 col-md-4 current-orders-height">
+<div class="container col-sm-8 col-md-4">
     <div id="orders" class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading current-orders-header-height">
             <div class="row">
                 <div class="col-md-10 col-sm-10">Выберите заказ:</div>
             </div>
         </div>
-        <div class="list-group">
+        <div class="list-group current-orders-height">
             <a id="{{order.id}}"
                 data-toggle="modal"
                 data-target="#showOrderModal"
                 class="list-group-item order-list-{{ordersLinks[order.id]}}"
                 ng-click="setClickedOrder(order)"
-                ng-repeat="order in showingOrders.slice(pageParameters.pageSize*currentPage.page, pageParameters.pageSize*(currentPage.page+1))">
+                ng-repeat="order in showingOrders">
                 <p class="list-group-item-text">{{order.description}}</p>
                 <p class="list-group-item-text"><b>Адрес: </b>{{order.address}}</p>
                 <p class="list-group-item-text"><b>Актуально до: </b>{{getExpireDate(order)}}</p>
             </a>
-        </div>
+         <div>
     </div>
-</div>
-<div class="container-fluid col-md-4s col-sm-8" position="fixed">
-    <nav align="center">
-        <ul class="pagination">
-            <li>
-                <a aria-label="Previous" ng-click="previousPage(currentPage)">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li ng-repeat="i in currentPage.pages" ng-class="{true:'active', false:''}[i == currentPage.page]">
-                <a ng-click="setPage(currentPage, i)">
-                    {{i+1}}
-                </a>
-            </li>
-            <li>
-                <a aria-label="Next" ng-click="nextPage(currentPage)">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
 </div>
