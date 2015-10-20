@@ -1,0 +1,67 @@
+.navbar-avatar {
+    width: 32px;
+}
+
+.navbar-nav>li>a.avatar-dropdown-toogle {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    min-width: 200px;
+}
+
+.dropdown-menu {
+    min-width: 200px;
+}
+
+.order-short {
+    background: darkgray;
+}
+
+.angular-google-map-container {
+    height: calc(80vh);
+    height: -webkit-calc(80vh);
+    height: -moz-calc(80vh);
+}
+
+.list-orders-height {
+    height: calc(76vh);
+    height: -webkit-calc(76vh);
+    height: -moz-calc(76vh);
+}
+
+.new-order-fileds { 
+    resize:vertical;
+}
+
+.profile-avatar {
+    text-align: center;
+}
+
+.list-group-item-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+p.break-word {
+    word-wrap: break-word;
+}
+
+.panel>.list-group>.order-list-Friends {
+    border-left: 3px solid #5cb85c; !important;
+}
+
+.panel>.list-group>.order-list-FriendOfFriend {
+    border-left: 3px solid #f0ad4e; !important;
+}
+
+.panel>.list-group>.order-list-All {
+    border-left: 3px solid #f0ad4e; !important;
+}
+
+.intl-tel-input {
+    display: table-cell;
+}

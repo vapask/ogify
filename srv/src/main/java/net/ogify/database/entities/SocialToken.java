@@ -1,21 +1,27 @@
 package net.ogify.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Date;
 
 /**
- * Created by melges.morgen on 15.02.15.
+ * Class which represents social_tokens table - table of auth tokens in social networks.
  */
 @Entity
 @Table(name = "social_tokens")
 @NamedQueries({
-        @NamedQuery(name = "SocialToken.getUsersToken", query = "select token from SocialToken token where " +
+        @NamedQuery(name = "SocialToken.getUsersTokens", query = "select token from SocialToken token where " +
                 "token.owner = :owner and token.tokensSocialNetwork = :socialNetwork " +
-                "and token.expireIn > CURRENT_TIMESTAMP")
+                "and token.expireIn > CURRENT_TIMESTAMP"),
+        @NamedQuery(name = "SocialToken.getNewestUsersToken", query = "select token from SocialToken token where " +
+                "token.owner = :owner and token.tokensSocialNetwork = :socialNetwork " +
+                "and token.expireIn > CURRENT_TIMESTAMP order by token.tokenId desc")
 })
 @XmlAccessorType(XmlAccessType.NONE)
+@JsonIgnoreProperties
 public class SocialToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +55,7 @@ public class SocialToken {
     public void setExpireIn(Long expireIn) {
         if (expireIn <= 0)
             expireIn = 2629743L * 1000L;
-        this.expireIn = new Date(System.currentTimeMillis() + expireIn);;
+        this.expireIn = new Date(System.currentTimeMillis() + expireIn);
     }
 
     public Date getExpireIn() {

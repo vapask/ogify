@@ -1,0 +1,51 @@
+<div class="container" ng-controller="MyOrdersController">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-4">
+                <h4 class="text-center">Новые</h4>
+                <hr class="divider">
+                <div class="list-group">
+                    <a class="list-group-item" 
+                     ng-repeat="order in myOrders | filter:onlyNew"
+                     data-toggle="modal" 
+                     data-target="#showOrderModal"
+                     ng-click="setClickedOrder(order)">
+                        <span class="label label-default pull-right">№{{order.id}}</span>
+                        <p class="list-group-item-text">{{order.description}}</p>
+                        <p class="small list-group-item-text"><b>Адрес:</b> {{order.address}}</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h4 class="text-center">В исполнении</h4>
+                <hr class="divider">
+                <div class="list-group">
+                    <a class="list-group-item" 
+                     ng-repeat="order in myOrders | filter:onlyRunning"
+                     data-toggle="modal" 
+                     data-target="#showOrderModal"
+                     ng-click="setClickedOrder(order)">
+                        <span class="label label-warning pull-right">№{{order.id}}</span>
+                        <p class="list-group-item-text">{{order.description}}</p>
+                        <p class="small list-group-item-text"><b>Адрес:</b> {{order.address}}</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h4 class="text-center">Завершенные</h4>
+                <hr class="divider">
+                <div class="list-group">
+                    <a class="list-group-item" 
+                     ng-repeat="order in myOrders | filter:onlyDone"
+                     data-toggle="modal" 
+                     data-target="#showOrderModal"
+                     ng-click="setClickedOrder(order)">
+                        <span class="label label-success pull-right">№{{order.id}}</span>
+                        <p class="list-group-item-text">{{order.description}}</p>
+                        <p class="small list-group-item-text"><b>Адрес:</b> {{order.address}}</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

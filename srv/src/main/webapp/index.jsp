@@ -17,11 +17,13 @@
 
     response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
     response.setHeader("Location", redirectPath);
+    response.sendRedirect(redirectPath);
 %>
 <html>
 <head>
-    <title>Start page</title>
+    <title>You will be redirected to <%= request.getRequestURI() + "/" + redirectPath %></title>
 </head>
 <body>
+You will be redirected to <%= request.getRequestURI() + "/" + redirectPath %>
 </body>
 </html>

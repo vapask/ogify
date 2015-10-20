@@ -17,19 +17,16 @@ function getOrdersById(id) {
     });
 }
 
-function createOrder() {
-	var request = '{"id":1,"owner":{"vkId":10497385,"user_id":1,"fullName":"Морген Матвей","photoUri":"http://cs613528.vk.me/v613528385/17fbe/M7rHtuU38cY.jpg","rating_as_customer":3.5,"rating_as_executor":3.5},"executor":{"vkId":10497385,"user_id":1,"fullName":"Морген Матвей","photoUri":"http://cs613528.vk.me/v613528385/17fbe/M7rHtuU38cY.jpg","rating_as_customer":3.5,"rating_as_executor":3.5},"status":"Running","namespace":"All","latitude":55.930542,"longitude":37.526966,"address":"Долгопрудный, Первомайская 34/5","reward":"Чай с печеньками","description":"Тестовый заказ","createdAt":1423975241000,"doneAt":1424552400000,"expireIn":1424552400000,"items":[{"id":2,"expectedCost":50.0,"comment":"Печенюшки"},{"id":3,"expectedCost":50.0,"comment":"Печенюшки"},{"id":4,"expectedCost":50.0,"comment":"Печенюшки"}]}';
-	var order = JSON.parse(request);
-
-	$.ajax({
-        url: REQUEST_URL + '/rest/orders/',
-        type: 'POST',
-        data: JSON.stringify(order),
-        success: function(data) {
-            console.log(data);
+function authViaKey() {
+    var key = $('#betaKey').val();
+    $.ajax({
+        type: "GET",
+        url: '/rest/auth/getRequestUri?betaKey=' + key,
+        success: function(result) {
+            window.location.href = result["requestUri"];
         },
-        error: function() {
-          
+        error: function(result) {
+            $('#loginError').show();
         }
     });
 }
@@ -37,7 +34,7 @@ function createOrder() {
 function logInSN(opts) {
     $.ajax({
         type: "GET",
-        url: '/rest/auth/getRequestUri?sn=' + opts.sn,
+        url: '/rest/auth/getRequestUri?=' + opts.sn,
         success: function(result) {
             var url = result["requestUri"];
             window.location.href = url;

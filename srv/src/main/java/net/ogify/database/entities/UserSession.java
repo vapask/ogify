@@ -1,7 +1,11 @@
 package net.ogify.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 /**
@@ -12,6 +16,7 @@ import java.util.Date;
         @UniqueConstraint(name = "user_and_session", columnNames = {"owner", "session_secret"})})
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE) // Deny session transfer to client
+@JsonIgnoreProperties
 public class UserSession {
 
     @Id

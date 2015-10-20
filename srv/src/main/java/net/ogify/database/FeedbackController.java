@@ -2,6 +2,8 @@ package net.ogify.database;
 
 import net.ogify.database.entities.Feedback;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -11,15 +13,14 @@ import javax.persistence.Persistence;
 /**
  * Created by melges on 15.03.2015.
  */
+@Component
 public class FeedbackController {
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("OgifyDataSource");
+    @Autowired
+    EntityManagerService entityManagerService;
 
-    private final static Logger logger = Logger.getLogger(OrderController.class);
-
-    public static void save(Feedback feedback) throws EntityExistsException {
-        EntityManager em = emf.createEntityManager();
+    public void save(Feedback feedback) throws EntityExistsException {
+        EntityManager em = entityManagerService.createEntityManager();
         try {
-
             em.getTransaction().begin();
             em.persist(feedback);
             em.getTransaction().commit();

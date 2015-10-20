@@ -8,17 +8,23 @@
     "angular-resource": "~1.4.2",
     "angular-route": "~1.4.2",
     "angular-cookies": "~1.4.2",
-    "angular-google-maps": "~2.1.5",
+    "angular-google-maps": "~2.2.1",
     "lodash": "~3.10.0",
     "bootstrap": "~3.3.5",
-    "bootstrap-social": "~4.9.1"
+    "bootstrap-social": "~4.9.1",
+    "bootstrap-datepicker": "~1.4.0",
+    "clockpicker": "~0.0.7",
+    "angulartics": "~0.20.0",
+    "angulartics-google-analytics": "~0.1.1",
+    "intl-tel-input": "~6.4.0"
   },
   "devDependencies": {
     "http-server": "~0.8.0"
   },
   "main": "index.js",
   "scripts": {
-    "start": "http-server -P http://localhost:8080/ogify -p 8000",
+    "start": "http-server -c10 -P http://dev.ogify.net -p 8000",
+    "startlocal": "http-server -c10 -P http://localhost:8080 -p 8000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

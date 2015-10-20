@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <scm>
         <connection>scm:git:git@github.com:ogify/ogify.git</connection>
         <url>scm:git:git@github.com:ogify/ogify.git/srv</url>
         <developerConnection>scm:git:git@github.com:ogify/ogify.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <distributionManagement>
         <repository>
@@ -20,6 +21,22 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>miredot</id>
+            <name>MireDot Releases</name>
+            <url>http://nexus.qmino.com/content/repositories/miredot</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <repositories>
+        <repository>
+            <id>miredot</id>
+            <name>MireDot Releases</name>
+            <url>http://nexus.qmino.com/content/repositories/miredot</url>
+        </repository>
+    </repositories>
+
     <groupId>net.ogify</groupId>
     <artifactId>www</artifactId>
     <version>1.0.0-SNAPSHOT</version>
@@ -30,6 +47,7 @@
         <build.unknown>UNKNOWN</build.unknown>
         <build.number>${build.unknown}</build.number>
         <build.revision>${build.unknown}</build.revision>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
@@ -39,9 +57,32 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+                    <execution>
+                        <id>exec-npm-install</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <workingDirectory>../webclient</workingDirectory>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                                <argument>--production</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -57,6 +98,32 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>
+                                ../webclient
+                            </directory>
+                            <excludes>
+                                <exclude>
+                                    package.json
+                                </exclude>
+                                <exclude>
+                                    .idea
+                                </exclude>
+                            </excludes>
+                            <targetPath>
+                                client
+                            </targetPath>
+                        </resource>
+                        <resource>
+                            <directory>
+                                ${project.build.directory}/miredot
+                            </directory>
+                            <targetPath>
+                                doc
+                            </targetPath>
+                        </resource>
+                    </webResources>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
@@ -78,6 +145,7 @@
                     </archive>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -86,6 +154,95 @@
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <releaseProfiles>releases</releaseProfiles>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.qmino</groupId>
+                <artifactId>miredot-plugin</artifactId>
+                <version>1.6.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>restdoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <output>
+                        <title>OGIFY REST API Reference ${project.version}</title>
+                        <html>
+                            <baseUrl>http://dev.ogify.net/rest</baseUrl>
+                            <location>
+                                ${project.build.directory}/${project.artifactId}-${project.version}/docs
+                            </location>
+                            <initialCollapseLevel>2</initialCollapseLevel>
+                            <jsonDoc>Hidden</jsonDoc>
+                        </html>
+                    </output>
+                    <license>
+                        UHJvamVjdHxuZXQub2dpZnkud3d3fDIwMTYtMTAtMDV8dHJ1ZSNNQ3dDRkVBYVVBcEJaaHZUSUZPTmFmSFBBK3dLU2JHU0F
+                        oUlg4alFGdEZqeVc4UWs1TlRSNFlJVU9JbUhadz09
+                    </license>
+                    <restModel>
+                        <restFramework>
+                            <name>jax-rs</name>
+                        </restFramework>
+                        <filter>
+                            <excludes>
+                                <exclude>net.ogify.database.entities.SocialToken</exclude>
+                            </excludes>
+                        </filter>
+                        <fieldVisibility>
+                            <GETTER>PUBLIC</GETTER>
+                            <IS_GETTER>PUBLIC</IS_GETTER>
+                            <SETTER>PUBLIC</SETTER>
+                            <CREATOR>PUBLIC_ONLY</CREATOR>
+                            <FIELD>NON_PRIVATE</FIELD>
+                        </fieldVisibility>
+                        <httpStatusCodes>
+                            <httpStatusCode>
+                                <httpCode>200</httpCode>
+                                <document>always</document>
+                                <defaultMessage>The service call has completed successfully.</defaultMessage>
+                            </httpStatusCode>
+                            <httpStatusCode>
+                                <httpCode>401</httpCode>
+                                <document>
+                                    explicit: net.ogify.engine.secure.exceptions.NotAuthenticatedException
+                                </document>
+                                <defaultMessage>The user is not authorized to use this service.</defaultMessage>
+                                <sticky>true</sticky>
+                            </httpStatusCode>
+                            <httpStatusCode>
+                                <httpCode>502</httpCode>
+                                <document>
+                                    explicit: java.rmi.RemoteException,net.ogify.engine.vkapi.exceptions.VkSideError
+                                </document>
+                                <defaultMessage>
+                                    The remote system (e.g. vk) has failed to provide request.
+                                </defaultMessage>
+                                <sticky>true</sticky>
+                            </httpStatusCode>
+                            <httpStatusCode>
+                                <httpCode>400</httpCode>
+                                <document>put,post</document>
+                                <defaultMessage>Invalid JSON input.</defaultMessage>
+                            </httpStatusCode>
+                            <httpStatusCode>
+                                <httpCode>415</httpCode>
+                                <document>always</document>
+                                <defaultMessage>Content-Type is invalid (probably, not JSON).</defaultMessage>
+                                <sticky>true</sticky>
+                            </httpStatusCode>
+                            <httpStatusCode>
+                                <httpCode>500</httpCode>
+                                <document>always</document>
+                                <defaultMessage>The service call has not succeeded.</defaultMessage>
+                                <sticky>true</sticky>
+                            </httpStatusCode>
+                        </httpStatusCodes>
+                    </restModel>
                 </configuration>
             </plugin>
         </plugins>
@@ -148,6 +305,41 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>18.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.2.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.2.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>4.2.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>4.2.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.ext</groupId>
+            <artifactId>jersey-spring3</artifactId>
+            <version>2.21</version>
+        </dependency>
+        <dependency>
+            <groupId>com.qmino</groupId>
+            <artifactId>miredot-annotations</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.189</version>
         </dependency>
     </dependencies>
 </project>

@@ -1,8 +1,8 @@
 package net.ogify.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "orders_items")
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +29,7 @@ public class OrderItem {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_order", nullable = false)
+    @JsonIgnore
     Order order;
 
     public void setId(Long id) {

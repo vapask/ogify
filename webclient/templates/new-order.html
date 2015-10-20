@@ -1,0 +1,130 @@
+﻿<div class="modal fade" id="createOrderModal" tabindex="-1" role="dialog" aria-labelledby="createOrderLabel">
+    <div class="modal-dialog" role="document" ng-controller="CreateOrderModalController">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="createOrderLabel">
+                    Создать заказ
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="comment">Описание заказа:</label>
+                            <textarea class="form-control new-order-fileds" rows="3" 
+                                      id="comment" 
+                                      ng-model="order.description">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="order_cost">Вознаграждение:</label>
+                            <textarea class="form-control new-order-fileds" rows="3" 
+                                      id="order_cost" 
+                                      ng-model="order.reward">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="expire_in_container">Актуально до:</label>
+                    <div class="row">
+                        <div class="col-md-12" id="expire_in_container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group date" id="expire_in"
+                                         data-provide="datepicker"
+                                         data-date-format="dd.mm.yyyy" data-date-week-start="1"
+                                         data-date-today-btn="linked" data-date-language="ru"
+                                         data-date-today-highlight="true">
+                                        <input type="text" class="form-control" ng-model="order.expireDate">
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-th"></i>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group clockpicker" data-placement="left" data-align="top"
+                                         id="expire_in_time" data-autoclose="true" ng-click="chooseTime()">
+                                        <input type="text" class="form-control" value="13:14" ng-model="order.expireTime">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Добавить товар:</label>
+                    <div class="row">
+                        <div ng-repeat="item in order.items">
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" placeholder="Товар" ng-model="item.comment">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group has-feedback">
+                                    <input type="text" class="form-control" placeholder="Цена" ng-model="item.expectedCost">
+                                    <span class="glyphicon glyphicon-rub form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <div ng-if="itemInList($index)" class="col-md-1">
+                                <span ng-click="removeFromList($index)" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </span>
+                            </div>
+                            <div ng-if="!itemInList($index)" class="col-md-1">
+                                <span ng-click="addToList()" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <ul class="todo-list" id="itemlist"></ul>
+                </div>
+                <div class="form-group">
+                    <label for="address">Адрес:</label>
+                    <input class="form-control" type="text" id="address"
+                            ng-model="order.address.plainAddress"/>
+                </div>
+                <div class="form-group">
+                    <label for="telephoneNumber">Телефон для связи</label>
+                    <input id="telephoneNumber" type="tel" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="namespace">Кто может выполнить:</label>
+                    <select id="namespace" class="form-control" ng-model="order.namespace">
+                        <option value="Private">Отдать другу</option>
+                        <option value="Friends">Все друзья</option>
+                        <option value="FriendsOfFriends" selected>Все друзья и друзья друзей</option>
+                        <option value="All">Все</option>
+                    </select>
+                </div>
+                <div class="alert alert-warning"
+                     ng-repeat="alert in alerts.warning">
+                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{alert.message}} </strong>
+                </div>
+                <div class="alert alert-danger"
+                     ng-repeat="alert in alerts.error">
+                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{alert.message}} </strong>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                <button ng-click="createOrder()" type="button" class="btn btn-primary">Создать</button>
+            </div>
+        </div>
+    </div>
+</div>

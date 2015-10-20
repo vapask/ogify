@@ -1,26 +1,85 @@
-<!-- -->
 <div class="col-sm-12 col-md-8 main ">
-    <div class="panel panel-default map-container-height">
+    <div class="panel panel-default">
         <div class="panel-body">
-            <ui-gmap-google-map center='map.center' zoom='map.zoom' control="map.control">
+            <ui-gmap-google-map center='map.center' zoom='map.zoom' control="map.control" events="map.events">
+                <ui-gmap-marker
+                        ng-if="selfMarker.visible"
+                        coords="selfMarker.coords"
+                        options="selfMarker.options"
+                        idkey="selfMarker.id"
+                        events="selfMarker.events"
+                        >
+                </ui-gmap-marker>
+
                 <ui-gmap-markers
-                        models="currentUserOrders"
-                        idKey="'id'"
-                        coords="'self'"></ui-gmap-markers>
+                        ng-if="!doSpider"
+                        models="showingOrders"
+                        coords="'self'"
+                        idkey="'id'"
+                        events="markersEvents"
+                        type="'cluster'"
+                        typeOptions="clusterOptions"
+                        >
+                </ui-gmap-markers>
+                <ui-gmap-markers
+                        ng-if="doSpider"
+                        models="showingOrders"
+                        coords="'self'"
+                        idkey="'id'"
+                        typeEvents="markersEvents"
+                        type="'spider'"
+                        modelsbyref="true"
+                        typeOptions="spiderOptions"
+                        >
+                </ui-gmap-markers>
             </ui-gmap-google-map>
         </div>
     </div>
 </div>
-<div class="col-sm-8 col-md-4 ">
-    <div class="panel panel-default current-orders-height">
-        <div class="panel-heading">Текущие заказы</div>
-        <div class="panel-body">
-            <div class="list-group">
-                <a id="{{order.id}}" href="#" class="list-group-item" ng-repeat="order in currentUserOrders">
-                    <h4 class="list-group-item-heading">Заказ №{{order.id}} от {{order.owner.fullName}}</h4>
-                    <p class="list-group-item-text">{{order.description}}</p>
-                </a>
+<div class="col-sm-8 col-md-4 list-orders-height" id="order-list-container">
+    <div id="orders" class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">Выберите заказ:</div>
             </div>
         </div>
+        <div class="list-group">
+            <a class="list-group-item" id="hidden-order" ng-hide="1">
+                <p class="list-group-item-text">description</p>
+                <p class="list-group-item-text"><b>Адрес: </b></p>
+                <p class="list-group-item-text"><b>Актуально до: </b></p>
+            </a>
+            <a id="{{order.id}}"
+                data-toggle="modal"
+                data-target="#showOrderModal"
+                class="list-group-item order-list-{{ordersLinks[order.id]}}"
+                ng-click="setClickedOrder(order)"
+                ng-repeat="order in showingOrders.slice(pageParameters.pageSize*currentPage.page, pageParameters.pageSize*(currentPage.page+1))">
+                <p class="list-group-item-text">{{order.description}}</p>
+                <p class="list-group-item-text"><b>Адрес: </b>{{order.address}}</p>
+                <p class="list-group-item-text"><b>Актуально до: </b>{{getExpireDate(order)}}</p>
+            </a>
+        </div>
     </div>
+</div>
+<div position="fixed" ng-hide="currentPage.pages < 2">
+    <nav align="center">
+        <ul class="pagination">
+            <li>
+                <a aria-label="Previous" ng-click="previousPage(currentPage)">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li ng-repeat="i in currentPage.pages" ng-class="{true:'active', false:''}[i == currentPage.page]">
+                <a ng-click="setPage(currentPage, i)">
+                    {{i+1}}
+                </a>
+            </li>
+            <li>
+                <a aria-label="Next" ng-click="nextPage(currentPage)">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>

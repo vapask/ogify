@@ -9,31 +9,24 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Ogify</a>
+            <a class="navbar-brand" href="#/dashboard">Ogify<sup title="Сервис находится в состоянии тестирования">&nbsp;&alpha;</sup></a>
         </div>
-        <span>
-
-        </span>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-controller="NavBarController">
+            <div ng-include="createOrderTemplateUri"></div>
+            <div ng-include="showOrderTemplateUri"></div>
+            <ul class="nav navbar-nav" ng-if="user.$resolved == true && authenticated == true">
+                <li ng-class="getClass('dashboard')">
+                    <a href="#/dashboard">Заказы рядом</a>
+                </li>
+                <li ng-class="getClass('my-orders')">
+                    <a href="#/my-orders">Созданные мной</a>
+                </li>
+                <li ng-class="getClass('in-progress')">
+                    <a href="#/in-progress">Исполняемые мной</a>
                 </li>
             </ul>
-            <div class="navbar-right" ng-controller="NavBarController">
+            <div class="navbar-right">
                 <!-- Modal -->
                 <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel">
                     <div class="modal-dialog" role="document">
@@ -86,20 +79,32 @@
                     </button>
                 </div>
 
-                <!-- Profile widget -->
-                <ul ng-if="user.$resolved == true && authenticated == true" class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="javascript:void(0)" class="avatar-dropdown-toogle" data-toggle="dropdown">
-                            <img ng-src="{{user.photoUri}}" class="navbar-avatar profile-image img-circle">
-                            <b>{{user.fullName}}</b><span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#"><i class="fa fa-cog"></i>Профиль</a></li>
-                            <li class="divider"></li>
-                            <li><a ng-click="logoutSN()"><i class="fa fa-sign-out"></i>Выйти</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                <div class="row" ng-if="user.$resolved == true && authenticated == true">
+                    <ul class="nav navbar-nav">
+                        <div class="navbar-form">
+                            <button type="button" data-toggle="modal" data-target="#createOrderModal" ng-click="updateOrderData()"
+                                    class="btn btn-primary">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                Создать заказ
+                            </button>
+                        </div>
+                    </ul>
+
+                    <!-- Profile widget -->
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="avatar-dropdown-toogle" data-toggle="dropdown">
+                                <img ng-src="{{user.photoUri}}" class="navbar-avatar profile-image img-circle">
+                                <b>{{user.fullName}}</b><span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/profile/{{user.userId}}"><i class="fa fa-cog"></i>Профиль</a></li>
+                                <li class="divider"></li>
+                                <li><a ng-click="logoutSN()"><i class="fa fa-sign-out"></i>Выйти</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
 
             </div>
         </div>
