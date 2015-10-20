@@ -6,7 +6,7 @@
         <connection>scm:git:git@github.com:ogify/ogify.git</connection>
         <url>scm:git:git@github.com:ogify/ogify.git/srv</url>
         <developerConnection>scm:git:git@github.com:ogify/ogify.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v1.0.2</tag>
     </scm>
 
     <distributionManagement>
@@ -38,7 +38,7 @@
 
     <groupId>net.ogify</groupId>
     <artifactId>www</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <packaging>war</packaging>
 
     <properties>
