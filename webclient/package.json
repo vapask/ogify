@@ -16,7 +16,9 @@
     "clockpicker": "~0.0.7",
     "angulartics": "~0.20.0",
     "angulartics-google-analytics": "~0.1.1",
-    "intl-tel-input": "~6.4.0"
+    "intl-tel-input": "~6.4.0",
+    "angular-sanitize": "~1.4.7",
+    "angular-i18n": "~1.4.7"
   },
   "devDependencies": {
     "http-server": "~0.8.0"
